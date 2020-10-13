@@ -1,5 +1,17 @@
 import paramiko
 from scp import SCPClient
+import nbformat
+from nbconvert import PythonExporter
+
+with open('test.ipynb') as f:
+    nb = nbformat.read(f, as_version=4)
+    exporter = PythonExporter()
+
+    (body, resources) = exporter.from_notebook_node(nb)
+
+    f = open("test.py", "w")
+    f.write(body)
+    f.close()
 
 k = paramiko.RSAKey.from_private_key_file("./karishnu.pem")
 c = paramiko.SSHClient()
