@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name='prodo-pkg-karishnu',
-    version='0.0.1',
+    version='0.0.2',
     author="Karishnu Poddar",
     author_email="karishnu@gmail.com",
-    py_modules=['prodo'],
+    py_modules=['script'],
     install_requires=[
         'Click',
         'paramiko',
