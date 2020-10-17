@@ -64,7 +64,3 @@ def init():
 
     config_file = open("prodo.json", "w+")
     json.dump(config, config_file, indent = 4, sort_keys=True)
-
-
-if __name__ == '__main__':
-    cli()
