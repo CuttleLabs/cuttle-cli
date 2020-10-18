@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='prodo-pkg-karishnu',
+    name='prodo',
     version='0.0.2',
     author="Karishnu Poddar",
     author_email="karishnu@gmail.com",
