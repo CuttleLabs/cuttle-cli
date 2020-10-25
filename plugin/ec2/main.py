@@ -47,11 +47,11 @@ def cli(config, username, pem, host):
     c = paramiko.SSHClient()
 
     c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    print("connecting")
-    c.connect(hostname = config['services']['ec2']['host'], username = config['services']['ec2']['username'], pkey = k)
-    print("connected")
 
-    # SCPCLient takes a paramiko transport as an argument
+    print("Connecting to EC2 instance.")
+    c.connect(hostname = config['services']['ec2']['host'], username = config['services']['ec2']['username'], pkey = k)
+    print("Connected to EC2 instance.")
+
     scp = SCPClient(c.get_transport())
     scp.put('test.py', 'test.py')
 

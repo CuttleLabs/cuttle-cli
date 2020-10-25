@@ -6,11 +6,14 @@ setup(
     author="Karishnu Poddar",
     author_email="karishnu@gmail.com",
     py_modules=['script'],
+    package_dir = {'': '.'},
     install_requires=[
         'Click',
         'paramiko',
         'scp',
-        'nbformat'
+        'nbformat',
+        'nbconvert',
+        'ipython'
     ],
     entry_points='''
         [console_scripts]
