@@ -1,6 +1,8 @@
 import json
 import os
 import nbformat
+from tokenize import tokenize, untokenize, NUMBER, STRING, NAME, OP
+from io import BytesIO
 
 class CuttleEngine:
     def __init__(self):
@@ -24,7 +26,7 @@ class CuttleEngine:
         with open(notebook_path) as f:
             nb = nbformat.read(f, as_version=4)
 
-        nb = self.envtransform(self.config, nb, 'k')
+        nb = self.envtransform(self.config, nb, env_name)
 
         ns = {
             'notebook': nb
@@ -44,15 +46,25 @@ class CuttleEngine:
             if cell['cell_type'] != 'code':
                 cells_new.append(cell)
                 continue
-            if cell['source'].find('#cuttle-environment') == -1:
+
+            cuttle_comment_config = ''
+
+            g = tokenize(BytesIO(cell['source'].encode('utf-8')).readline)
+
+            for g_ in g:
+                if g_.type == 57:
+                    cuttle_comment_config = g_.string
+
+            if cuttle_comment_config.find('#cuttle-environment') == -1:
                 cells_new.append(cell)
                 continue
-            if cell['source'].find('#cuttle-environment') > -1:
-                if cell['source'].find('#cuttle-environment-' + env_name + '-disable') > -1:
-                    continue
-                if cell['source'].find('#cuttle-environment-' + env_name + '\n') > -1:
-                    cells_new.append(cell)
-                    continue
+
+            if cuttle_comment_config == '#cuttle-environment-' + env_name + '-disable':
+                continue
+
+            if cuttle_comment_config == '#cuttle-environment-' + env_name:
+                cells_new.append(cell)
+                continue
 
         notebook.cells = cells_new
 
