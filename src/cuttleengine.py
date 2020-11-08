@@ -47,22 +47,49 @@ class CuttleEngine:
                 cells_new.append(cell)
                 continue
 
+            cuttle_environments = []
+            cuttle_environments_disable = []
             cuttle_comment_config = ''
+            cuttle_environment_tag_present = False
+            cuttle_environment_disable_tag_present = False
+            cuttle_config_object = {}
 
             g = tokenize(BytesIO(cell['source'].encode('utf-8')).readline)
 
             for g_ in g:
-                if g_.type == 57:
-                    cuttle_comment_config = g_.string
+                if g_.type == 57: # Checks if line is a comment
+                    if g_.string.split(" ")[0] == '#cuttle-environment':
+                        cuttle_environment_tag_present = True
+                        cuttle_environments = g_.string.split(" ")[1:]
 
-            if cuttle_comment_config.find('#cuttle-environment') == -1:
-                cells_new.append(cell)
-                continue
+                    if g_.string.split(" ")[0] == '#cuttle-environment-disable':
+                        cuttle_environment_disable_tag_present = True
+                        cuttle_environments_disable = g_.string.split(" ")[1:]
 
-            if cuttle_comment_config == '#cuttle-environment-' + env_name + '-disable':
-                continue
+                    if g_.string.split(" ")[0] == '#cuttle-environment-config':
+                        if g_.string.split(" ")[1] == env_name:
+                            cuttle_config = g_.string.split(" ")[2:]
+                            
+                            for config in cuttle_config:
+                                cuttle_config_object[config.split('=')[0]] = config.split('=')[1]
 
-            if cuttle_comment_config == '#cuttle-environment-' + env_name:
+                    if g_.string.split(" ")[0] == '#cuttle-config':
+                        cuttle_config = g_.string.split(" ")[1:]
+                            
+                        for config in cuttle_config:
+                            cuttle_config_object[config.split('=')[0]] = config.split('=')[1]
+
+            cell['cuttle_config'] = cuttle_config_object
+
+            if cuttle_environment_tag_present == True:
+                if env_name in cuttle_environments:
+                    cells_new.append(cell)
+                    continue
+            elif cuttle_environment_disable_tag_present == True:
+                if env_name not in cuttle_environments_disable:
+                    cells_new.append(cell)
+                    continue
+            else:
                 cells_new.append(cell)
                 continue
 
