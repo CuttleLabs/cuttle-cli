@@ -21,7 +21,7 @@ class CuttleEngine:
 
     def transform(self, env_name):
         plugin_path = os.path.join('plugin', self.config['environments'][env_name]['transformer'], 'main.py')
-        notebook_path = os.path.join(self.home_path, 'test.ipynb')
+        notebook_path = os.path.join(self.home_path, self.config['notebook'])
 
         with open(notebook_path) as f:
             nb = nbformat.read(f, as_version=4)
