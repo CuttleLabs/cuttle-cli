@@ -1,10 +1,13 @@
 import click
 import json
 import os
+from shutil import copyfile
+import shutil
+import scp
+import sys
 
 from cuttleengine import CuttleEngine
 
-plugin_folder = 'plugin'
 config_file_name = 'cuttle.json'
 default_notebook_name = 'main.ipynb'
 default_plugin_file = 'main.py'
@@ -44,16 +47,22 @@ class Services(click.MultiCommand):
 def cli():
     pass
 
-@click.command()
+@cli.command()
 @click.option('--env_name', help='The name of deployment environment', prompt=True, type=str)
 @pass_config
 def deploy(env_name, config):
-    # try:
-    #     path = '../'
-    #     os.mkdir(path + str(config['environments'][env_name]))
-    # except Exception as e:
-    #     print(e)
-    pass
+    try:
+        dep = config['environments'][env_name]
+        plugin_path = os.path.join('platform', config['environments'][env_name]['platform'],'main.py')
+        with open(plugin_path) as f:
+            ns = {
+                'config': dep
+            }
+            code = compile(f.read(), plugin_path, 'exec')
+            eval(code, ns, ns)
+    except Exception as e:
+        print(e)
+
 
 @cli.command()
 @click.option('--env_name', help='Unique name for Cuttle environment.', prompt=True, type=str)
@@ -75,11 +84,24 @@ def create(env_name, platform, transformer, username, pem_file, ip, config):
     config_file = open(config_file_name, "w+")
     json.dump(config, config_file, indent = 4, sort_keys=True)
 
-@cli.command(cls=Services)
-@click.pass_context
+# @cli.command(cls=Services)
+# @click.pass_context
+# @pass_config
+# def transform(ctx, config):
+#     pass
+
+@cli.command()
+@click.option('--env_name', help='Enter env name', prompt=True, type=str)
 @pass_config
-def transform(ctx, config):
-    pass
+def transform(env_name, config):
+    try:
+        cuttleengine = CuttleEngine()
+        cuttleengine.setHomePath(os.getcwd())
+        cuttleengine.transform(env_name)
+    except Exception as e:
+        print('exception occurred: ')
+        print(e)
+
 
 @cli.command()
 @click.option('--notebook', help='Notebook file name.', prompt=True, type=str, default=default_notebook_name)

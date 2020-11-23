@@ -1,6 +1,6 @@
-paramiko=2.7.2
-scp=0.13.2
-nbconvert=6.0.7
-ipython=7.16.1
-click=7.1.2
-astunparse=1.6.3
+paramiko==2.7.2
+scp==0.13.2
+nbconvert==6.0.7
+ipython==7.16.1
+click==7.1.2
+astunparse==1.6.3

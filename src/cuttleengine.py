@@ -6,6 +6,7 @@ from io import BytesIO
 
 class CuttleEngine:
     def __init__(self):
+        # self.config_file_name = '../prodo.json'
         self.config_file_name = 'cuttle.json'
 
         config_file = open(self.config_file_name, "r")
@@ -20,7 +21,7 @@ class CuttleEngine:
         return self.config['environments'].keys()
 
     def transform(self, env_name):
-        plugin_path = os.path.join('plugin', self.config['environments'][env_name]['transformer'], 'main.py')
+        plugin_path = os.path.join(self.home_path, 'transform', self.config['environments'][env_name]['transformer'], 'main.py')
         notebook_path = os.path.join(self.home_path, self.config['notebook'])
 
         with open(notebook_path) as f:
