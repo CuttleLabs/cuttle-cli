@@ -29,7 +29,7 @@ def pass_config(f):
         
     return update_wrapper(wrapper, f)
 
-class Services(click.MultiCommand):
+class Transformers(click.MultiCommand):
     def list_commands(self, ctx):
         cuttleengine = CuttleEngine()
         cuttleengine.setHomePath(os.getcwd())
@@ -42,6 +42,20 @@ class Services(click.MultiCommand):
         cuttleengine.setHomePath(os.getcwd())
 
         return cuttleengine.transform(name)
+
+class Platforms(click.MultiCommand):
+    def list_commands(self, ctx):
+        cuttleengine = CuttleEngine()
+        cuttleengine.setHomePath(os.getcwd())
+        ctx.obj = cuttleengine
+
+        return ctx.obj.getEnvironments()
+
+    def get_command(self, ctx, name):
+        cuttleengine = CuttleEngine()
+        cuttleengine.setHomePath(os.getcwd())
+
+        return cuttleengine.deploy(name)
 
 @click.group()
 def cli():
@@ -78,9 +92,12 @@ def create(env_name, platform, transformer, username, pem_file, ip, config):
     config_file = open(config_file_name, "w+")
     json.dump(config, config_file, indent = 4, sort_keys=True)
 
-@cli.command(cls=Services)
-@pass_config
-def transform(config):
+@cli.command(cls=Transformers)
+def transform():
+    pass
+
+@cli.command(cls=Platforms)
+def deploy():
     pass
 
 @cli.command()

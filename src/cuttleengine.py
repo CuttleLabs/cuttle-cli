@@ -41,6 +41,21 @@ class CuttleEngine:
 
         return ns['cli']
 
+    def deploy(self, env_name):
+        platform_path = os.path.join(os.path.dirname(__file__), '..', 'platform', self.config['environments'][env_name]['platform'], 'main.py')
+        output_file_path = os.path.join(self.home_path, 'output', env_name)
+
+        ns = {
+            'output_path': output_file_path,
+            'cuttle_config': self.config['environments'][env_name]
+        }
+
+        with open(platform_path) as f:
+            code = compile(f.read(), platform_path, 'exec')
+            eval(code, ns, ns)
+
+        return ns['cli']
+
     def _envtransform(self, config, notebook, env_name):
         cells = notebook.cells
         cells_new = []
