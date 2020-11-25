@@ -5,25 +5,16 @@ import nbformat
 from nbconvert import PythonExporter
 import os
 
-def main():
+@click.command()
+def cli():
     exporter = PythonExporter()
 
     (body, resources) = exporter.from_notebook_node(notebook)
-    
-    try:
-        os.mkdir('output')
-        os.mkdir('output/test-1/')
-    except:
-        print('output folder already exists')
-        pass
-    f = open("output/test-1/mnist.py", "w")
+
+    os.makedirs(output_path, exist_ok=True)
+
+    output_file_path = os.path.join(output_path, 'main.py')
+
+    f = open(output_file_path, "w")
     f.write(body)
     f.close()
-    
-
-@click.command()
-def cli():
-    main()
-    pass
-
-main()

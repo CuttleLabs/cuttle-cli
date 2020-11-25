@@ -67,46 +67,4 @@ def cli(config, username, pem, host):
 		print(stderr.read())
 	
 	c.close()
-
-
-# if __name__ == '__main__':
-	# cli()
-
-# config = {
-#             "ip": "ec2-52-91-244-35.compute-1.amazonaws.com",
-#             "pem_file": "sushanti-cuttle.pem",
-#             "platform": "linux",
-#             "transformer": "script",
-#             "username": "ec2-user"
-#         }
-
-def linux():
-	ip = config['ip']
-	username = config['username']
-	pem_file = config['pem_file']
 	
-	k = paramiko.RSAKey.from_private_key_file(pem_file)
-	c = paramiko.SSHClient()
-	
-	c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-	
-	print("Connecting to EC2 instance.")
-	c.connect(hostname=ip, username=username, pkey=k)
-	print("Connected to EC2 instance.")
-	
-	scp = SCPClient(c.get_transport())
-	# scp.put('../../output/test-1/mnist.py', 'test.py')
-	scp.put('output/test-1/mnist.py', 'test.py')
-	
-	commands = ['python test.py']
-	
-	for command in commands:
-		print("Executing {}".format(command))
-		stdin, stdout, stderr = c.exec_command(command)
-		print(stdout.read())
-		print("Errors")
-		print(stderr.read())
-	
-	c.close()
-	
-linux()

@@ -68,40 +68,20 @@ def deploy(env_name, config):
 @click.option('--env_name', help='Unique name for Cuttle environment.', prompt=True, type=str)
 @click.option('--platform', help='The platform you want to deploy on', prompt=True, type=str)
 @click.option('--transformer', help='Transformer to use along with Cuttle environment.', prompt=True, type=str, default='notebook')
-@click.option('--username', help='Username to login', prompt=True)
-@click.option('--pem_file', help='Name of the pem file', prompt=True)
-@click.option('--ip', help='Enter the public IP to ssh into it', prompt=True)
 @pass_config
 def create(env_name, platform, transformer, username, pem_file, ip, config):
     config['environments'][env_name] = {
         'platform': platform,
-        'transformer': transformer,
-        'username': username,
-        'pem_file': pem_file,
-        'ip': ip
+        'transformer': transformer
     }
 
     config_file = open(config_file_name, "w+")
     json.dump(config, config_file, indent = 4, sort_keys=True)
 
-# @cli.command(cls=Services)
-# @click.pass_context
-# @pass_config
-# def transform(ctx, config):
-#     pass
-
-@cli.command()
-@click.option('--env_name', help='Enter env name', prompt=True, type=str)
+@cli.command(cls=Services)
 @pass_config
-def transform(env_name, config):
-    try:
-        cuttleengine = CuttleEngine()
-        cuttleengine.setHomePath(os.getcwd())
-        cuttleengine.transform(env_name)
-    except Exception as e:
-        print('exception occurred: ')
-        print(e)
-
+def transform(config):
+    pass
 
 @cli.command()
 @click.option('--notebook', help='Notebook file name.', prompt=True, type=str, default=default_notebook_name)

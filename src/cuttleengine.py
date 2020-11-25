@@ -21,16 +21,18 @@ class CuttleEngine:
         return self.config['environments'].keys()
 
     def transform(self, env_name):
-        plugin_path = os.path.join(self.home_path, 'transform', self.config['environments'][env_name]['transformer'], 'main.py')
+        plugin_path = os.path.join(os.path.dirname(__file__), '..', 'transform', self.config['environments'][env_name]['transformer'], 'main.py')
         notebook_path = os.path.join(self.home_path, self.config['notebook'])
+        output_file_path = os.path.join(self.home_path, 'output', env_name)
 
         with open(notebook_path) as f:
             nb = nbformat.read(f, as_version=4)
 
-        nb = self.envtransform(self.config, nb, env_name)
+        nb = self._envtransform(self.config, nb, env_name)
 
         ns = {
-            'notebook': nb
+            'notebook': nb,
+            'output_path': output_file_path
         }
 
         with open(plugin_path) as f:
@@ -39,7 +41,7 @@ class CuttleEngine:
 
         return ns['cli']
 
-    def envtransform(self, config, notebook, env_name):
+    def _envtransform(self, config, notebook, env_name):
         cells = notebook.cells
         cells_new = []
 
