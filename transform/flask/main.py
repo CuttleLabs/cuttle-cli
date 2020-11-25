@@ -5,9 +5,7 @@ import nbformat
 from nbconvert import PythonExporter
 import os
 
-def main():
-    print(notebook)
-    
+def main():    
     body ='''
 from flask import Flask
 from flask import request
@@ -37,7 +35,11 @@ def hello():'''.format(route=cell.cuttle_config.route)
 if __name__ == '__main__':
     app.run()'''
 
-    f = open("test2.py", "w")
+    os.makedirs(output_path, exist_ok=True)
+
+    output_file_path = os.path.join(output_path, 'main.py')
+
+    f = open(output_file_path, "w")
     f.write(body)
     f.close()
 
