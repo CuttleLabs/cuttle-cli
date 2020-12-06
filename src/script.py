@@ -24,6 +24,7 @@ def pass_config(f):
             kwargs['config'] = config
             return ctx.invoke(f, *args, **kwargs)
         except Exception as e:
+            print(e)
             click.echo('Cuttle project not initialized.')
             return
         
@@ -81,9 +82,9 @@ def deploy(env_name, config):
 @cli.command()
 @click.option('--env_name', help='Unique name for Cuttle environment.', prompt=True, type=str)
 @click.option('--platform', help='The platform you want to deploy on', prompt=True, type=str)
-@click.option('--transformer', help='Transformer to use along with Cuttle environment.', prompt=True, type=str, default='notebook')
+@click.option('--transformer', help='Transformer to use along with Cuttle environment.', prompt=True, type=str)
 @pass_config
-def create(env_name, platform, transformer, username, pem_file, ip, config):
+def create(env_name, platform, transformer, config):
     config['environments'][env_name] = {
         'platform': platform,
         'transformer': transformer
