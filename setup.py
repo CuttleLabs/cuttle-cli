@@ -1,22 +1,23 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='prodo',
-    version='0.0.2',
+    name='cuttle',
+    version='0.0.1',
     author="Karishnu Poddar",
     author_email="karishnu@gmail.com",
-    py_modules=['script'],
-    package_dir = {'': '.'},
+    packages=find_packages(),
+    include_package_data=True,
     install_requires=[
         'Click',
         'paramiko',
         'scp',
         'nbformat',
         'nbconvert',
-        'ipython'
+        'ipython',
+        'click-log'
     ],
     entry_points='''
         [console_scripts]
-        prodo=script:cli
+        cuttle=cuttle.cli:cli
     ''',
 )

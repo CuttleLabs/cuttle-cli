@@ -21,7 +21,7 @@ class CuttleEngine:
         return self.config['environments'].keys()
 
     def transform(self, env_name):
-        plugin_path = os.path.join(os.path.dirname(__file__), '..', 'transform', self.config['environments'][env_name]['transformer'], 'main.py')
+        plugin_path = os.path.join(os.path.dirname(__file__), 'transform', self.config['environments'][env_name]['transformer'], 'main.py')
         notebook_path = os.path.join(self.home_path, self.config['notebook'])
         output_file_path = os.path.join(self.home_path, 'output', env_name)
 
@@ -42,7 +42,7 @@ class CuttleEngine:
         return ns['cli']
 
     def deploy(self, env_name):
-        platform_path = os.path.join(os.path.dirname(__file__), '..', 'platform', self.config['environments'][env_name]['platform'], 'main.py')
+        platform_path = os.path.join(os.path.dirname(__file__), 'platform', self.config['environments'][env_name]['platform'], 'main.py')
         output_file_path = os.path.join(self.home_path, 'output', env_name)
 
         ns = {
