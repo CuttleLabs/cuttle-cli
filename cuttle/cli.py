@@ -6,7 +6,7 @@ import shutil
 import scp
 import sys
 
-from cuttle.cuttleengine import CuttleEngine
+from cuttleengine import CuttleEngine
 
 config_file_name = 'cuttle.json'
 default_notebook_name = 'main.ipynb'
