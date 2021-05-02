@@ -85,12 +85,14 @@ def deploy(env_name, config):
 @click.option('--transformer', help='Transformer to use along with Cuttle environment.', prompt=True, type=str)
 @pass_config
 def create(env_name, platform, transformer, config):
+    config_file_path = os.path.join(os.getcwd(), config_file_name)
+
     config['environments'][env_name] = {
         'platform': platform,
         'transformer': transformer
     }
 
-    config_file = open(config_file_name, "w+")
+    config_file = open(config_file_path, "w+")
     json.dump(config, config_file, indent = 4, sort_keys=True)
 
 @cli.command(cls=Transformers)
@@ -104,8 +106,9 @@ def deploy():
 @cli.command()
 @click.option('--notebook', help='Notebook file name.', prompt=True, type=str, default=default_notebook_name)
 def init(notebook):
+    config_file_path = os.path.join(os.getcwd(), config_file_name)
     try:
-        config_file = open(config_file_name, "r")
+        config_file = open(config_file_path, "r")
         config_string = config_file.read()
         config = json.loads(config_string)
     except Exception as e:
@@ -115,7 +118,7 @@ def init(notebook):
 
     config['notebook'] = notebook
 
-    config_file = open(config_file_name, "w+")
+    config_file = open(config_file_path, "w+")
     json.dump(config, config_file, indent = 4, sort_keys=True)
 
 
