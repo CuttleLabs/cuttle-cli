@@ -73,8 +73,9 @@ class CuttleEngine:
             cuttle_config_object = {}
 
             g = tokenize(BytesIO(cell['source'].encode('utf-8')).readline)
+            cell_tokens = list(g)
 
-            for g_ in g:
+            for g_ in cell_tokens:
                 if g_.type == 57: # Checks if line is a comment
                     if g_.string.split(" ")[0] == '#cuttle-environment':
                         cuttle_environment_tag_present = True
@@ -84,12 +85,39 @@ class CuttleEngine:
                         cuttle_environment_disable_tag_present = True
                         cuttle_environments_disable = g_.string.split(" ")[1:]
 
-                    if g_.string.split(" ")[0] == '#cuttle-environment-config':
-                        if g_.string.split(" ")[1] == env_name:
-                            cuttle_config = g_.string.split(" ")[2:]
+                    if g_.string.split(" ")[0] in ['#cuttle-environment-config', '#cuttle-environment-set-config']:
+                        if g_.line[0] == "#":
+                            if g_.string.split(" ")[1] == env_name:
+                                cuttle_config = g_.string.split(" ")[2:]
                             
-                            for config in cuttle_config:
-                                cuttle_config_object[config.split('=')[0]] = config.split('=')[1]
+                                for config in cuttle_config:
+                                    cuttle_config_object[config.split('=')[0]] = config.split('=')[1]
+
+                        else:
+                            if g_.string.split(" ")[1] == env_name:
+                                cuttle_value = g_.string.split(" ")[2]
+                                line_tokens = list(filter(lambda x: x.line == g_.line, cell_tokens))
+                                name = ''
+
+                                for line_token in line_tokens:
+                                    if line_token.type == 1:
+                                        name = line_token.string
+                                        break
+
+                                cuttle_config_object[cuttle_value] = name
+
+                    if g_.string.split(" ")[0] == '#cuttle-environment-get-config':
+                        if g_.string.split(" ")[1] == env_name:
+                            cuttle_value = g_.string.split(" ")[2]
+                            line_tokens = list(filter(lambda x: x.line == g_.line, cell_tokens))
+                            name = ''
+
+                            for line_token in line_tokens:
+                                if line_token.type == 1:
+                                    name = line_token.string
+                                    break
+
+                            cell.source = cell.source.replace(g_.line, name + " = " + cuttle_value)
 
                     if g_.string.split(" ")[0] == '#cuttle-config':
                         cuttle_config = g_.string.split(" ")[1:]
