@@ -1,20 +1,24 @@
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![PyPI version](https://badge.fury.io/py/cuttle.svg)](https://badge.fury.io/py/cuttle) <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/cuttlehq?style=social">
-# Cuttle CLI
-
 ![alt text](/images/cuttle-logo.png)
 
-Converting a Python notebook into a deployable project is hard and shifts the source of truth away from your initial development environment. Cuttle uses code generation to transform your notebook into deployable python projects (ex. Airflow pipeline, Flask API or just a Python script) without writing any extra code. It is built to work with tranformer plugins making it possible to support any number of output projects.
+# Cuttle CLI
 
-Cuttle requires creating environments for different tranformations which makes your notebook configurable by setting python variables and removes cells based on the transformation environment.
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![PyPI version](https://badge.fury.io/py/cuttle.svg)](https://badge.fury.io/py/cuttle) <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/cuttlehq?style=social">
 
-#### Getting Started
+Converting a Python notebook into a deployable project is hard and shifts the source of truth away from your initial development environment. Cuttle uses code generation to automate transformation of your notebook into deployable python projects (ex. Airflow pipeline, Flask API or just a Python script) without writing any extra code. 
+
+## 😎 Features
+
+* Tranformer plugins making it possible to support any number of output projects.\
+* Environment support to allow different configurations and transformations for the same notebook.\
+* Easy to integrate into your Dev Ops pipeline.
+
+## 🚀 Getting Started
 
 Cuttle needs to be initialized in the same folder as your notebook project. 
 
 ```
 cuttle init
-cuttle create sample-environment --tranformer plugin-name
-cuttle transform sample-environment
+cuttle create <environment> --tranformer <plugin-name>
 ```
 
 This should create a `cuttle.json` file which can be pushed to the project git repository.
@@ -57,12 +61,20 @@ b = 2 #cuttle-environment-set-config <environment> <key>
 ...
 ```
 
-## Transformer Plugin Documentation
+#### Transform
+
+Creates transformed project in `output` folder.
+
+```
+cuttle transform <environment>
+```
+
+## 🤓 Transformer Plugin Documentation
 
 [Flask API](cuttle/transform/flask/README.md)
 
 
-## For Contributors
+## ⭐ For Contributors
 
 
 #### Building locally
