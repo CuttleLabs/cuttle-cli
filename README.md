@@ -8,8 +8,8 @@ Converting a Python notebook into a deployable project is hard and shifts the so
 
 ## 😎 Features
 
-* Tranformer plugins making it possible to support any number of output projects.\
-* Environment support to allow different configurations and transformations for the same notebook.\
+* Tranformer plugins making it possible to support any number of output projects.
+* Environment support to allow different configurations and transformations for the same notebook.
 * Easy to integrate into your Dev Ops pipeline.
 
 ## 🚀 Getting Started
