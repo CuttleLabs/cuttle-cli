@@ -10,7 +10,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
-from .cuttleengine import CuttleEngine
+from cuttleengine import CuttleEngine
 
 config_file_name = 'cuttle.json'
 default_notebook_name = 'main.ipynb'
