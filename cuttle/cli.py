@@ -63,7 +63,7 @@ def cli():
     pass
 
 @cli.command()
-@click.option('--env_name', help='The name of deployment environment', prompt=True, type=str)
+@click.option('--env_name', help='The name of deployment environment', prompt=True, type=str, default='default')
 @pass_config
 def deploy(env_name, config):
     try:
@@ -80,7 +80,7 @@ def deploy(env_name, config):
 
 
 @cli.command()
-@click.option('--env_name', help='Unique name for Cuttle environment.', prompt=True, type=str)
+@click.option('--env_name', help='Unique name for Cuttle environment.', prompt=True, type=str, default='default')
 @click.option('--platform', help='The platform you want to deploy on', prompt=True, type=str)
 @click.option('--transformer', help='Transformer to use along with Cuttle environment.', prompt=True, type=str)
 @pass_config

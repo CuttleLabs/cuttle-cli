@@ -6,7 +6,6 @@ from io import BytesIO
 
 class CuttleEngine:
     def __init__(self):
-        # self.config_file_name = '../prodo.json'
         self.config_file_name = 'cuttle.json'
 
         config_file = open(self.config_file_name, "r")
@@ -106,6 +105,25 @@ class CuttleEngine:
 
                                 cuttle_config_object[cuttle_value] = name
 
+                    if g_.string.split(" ")[0] in ['#cuttle-set-config']:
+                        if g_.line[0] == "#":
+                            cuttle_config = g_.string.split(" ")[1:]
+                            
+                            for config in cuttle_config:
+                                cuttle_config_object[config.split('=')[0]] = config.split('=')[1]
+
+                        else:
+                            cuttle_value = g_.string.split(" ")[1]
+                            line_tokens = list(filter(lambda x: x.line == g_.line, cell_tokens))
+                            name = ''
+
+                            for line_token in line_tokens:
+                                if line_token.type == 1:
+                                    name = line_token.string
+                                    break
+
+                            cuttle_config_object[cuttle_value] = name
+
                     if g_.string.split(" ")[0] == '#cuttle-environment-get-config':
                         if g_.string.split(" ")[1] == env_name:
                             cuttle_value = g_.string.split(" ")[2]
@@ -118,6 +136,18 @@ class CuttleEngine:
                                     break
 
                             cell.source = cell.source.replace(g_.line, name + " = " + cuttle_value)
+
+                    if g_.string.split(" ")[0] == '#cuttle-get-config':
+                        cuttle_value = g_.string.split(" ")[q]
+                        line_tokens = list(filter(lambda x: x.line == g_.line, cell_tokens))
+                        name = ''
+
+                        for line_token in line_tokens:
+                            if line_token.type == 1:
+                                name = line_token.string
+                                break
+
+                        cell.source = cell.source.replace(g_.line, name + " = " + cuttle_value)
 
                     if g_.string.split(" ")[0] == '#cuttle-config':
                         cuttle_config = g_.string.split(" ")[1:]
