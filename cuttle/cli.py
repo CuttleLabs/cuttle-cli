@@ -1,18 +1,21 @@
+from functools import update_wrapper
 import click
 import json
-import os
 from shutil import copyfile
 import shutil
 import scp
+
+import os
 import sys
 
-from cuttle.cuttleengine import CuttleEngine
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+
+from .cuttleengine import CuttleEngine
 
 config_file_name = 'cuttle.json'
 default_notebook_name = 'main.ipynb'
 default_plugin_file = 'main.py'
 
-from functools import update_wrapper
 
 def pass_config(f):
     @click.pass_context
@@ -27,8 +30,9 @@ def pass_config(f):
             print(e)
             click.echo('Cuttle project not initialized.')
             return
-        
+
     return update_wrapper(wrapper, f)
+
 
 class Transformers(click.MultiCommand):
     def list_commands(self, ctx):
@@ -44,6 +48,7 @@ class Transformers(click.MultiCommand):
 
         return cuttleengine.transform(name)
 
+
 class Platforms(click.MultiCommand):
     def list_commands(self, ctx):
         cuttleengine = CuttleEngine()
@@ -58,9 +63,11 @@ class Platforms(click.MultiCommand):
 
         return cuttleengine.deploy(name)
 
+
 @click.group()
 def cli():
     pass
+
 
 @cli.command()
 @click.option('--env_name', help='The name of deployment environment', prompt=True, type=str)
@@ -68,7 +75,8 @@ def cli():
 def deploy(env_name, config):
     try:
         dep = config['environments'][env_name]
-        plugin_path = os.path.join('platform', config['environments'][env_name]['platform'],'main.py')
+        plugin_path = os.path.join(
+            'platform', config['environments'][env_name]['platform'], 'main.py')
         with open(plugin_path) as f:
             ns = {
                 'config': dep
@@ -93,15 +101,18 @@ def create(env_name, platform, transformer, config):
     }
 
     config_file = open(config_file_path, "w+")
-    json.dump(config, config_file, indent = 4, sort_keys=True)
+    json.dump(config, config_file, indent=4, sort_keys=True)
+
 
 @cli.command(cls=Transformers)
 def transform():
     pass
 
+
 @cli.command(cls=Platforms)
 def deploy():
     pass
+
 
 @cli.command()
 @click.option('--notebook', help='Notebook file name.', prompt=True, type=str, default=default_notebook_name)
@@ -119,7 +130,7 @@ def init(notebook):
     config['notebook'] = notebook
 
     config_file = open(config_file_path, "w+")
-    json.dump(config, config_file, indent = 4, sort_keys=True)
+    json.dump(config, config_file, indent=4, sort_keys=True)
 
 
 if __name__ == "__main__":
