@@ -4,4 +4,3 @@ nbconvert==6.0.7
 ipython==7.16.1
 click==7.1.2
 astunparse==1.6.3
-click-log==0.3.2

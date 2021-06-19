@@ -4,6 +4,9 @@ from scp import SCPClient
 import nbformat
 from nbconvert import PythonExporter
 import os
+import logging
+
+logger = logging.getLogger()
 
 def main():    
     body ='''

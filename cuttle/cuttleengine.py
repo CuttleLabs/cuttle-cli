@@ -1,8 +1,11 @@
 import json
 import os
 import nbformat
-from tokenize import tokenize, untokenize, NUMBER, STRING, NAME, OP
+import logging
+from tokenize import tokenize, untokenize
 from io import BytesIO
+
+logger = logging.getLogger()
 
 class CuttleEngine:
     def __init__(self):
@@ -24,6 +27,8 @@ class CuttleEngine:
         plugin_path = os.path.join(os.path.dirname(__file__), 'transform', self.config['environments'][env_name]['transformer'], 'main.py')
         notebook_path = os.path.join(self.home_path, self.config['notebook'])
         output_file_path = os.path.join(self.home_path, 'output', env_name)
+
+        logger.info("Plugin path: " + plugin_path)
 
         with open(notebook_path) as f:
             nb = nbformat.read(f, as_version=4)
@@ -76,7 +81,7 @@ class CuttleEngine:
             cell_tokens = list(g)
 
             for g_ in cell_tokens:
-                if g_.type == 57: # Checks if line is a comment
+                if g_.type in [55, 57]: # Checks if line is a comment
                     if g_.string.split(" ")[0] == '#cuttle-environment':
                         cuttle_environment_tag_present = True
                         cuttle_environments = g_.string.split(" ")[1:]

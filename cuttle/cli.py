@@ -1,21 +1,24 @@
 from functools import update_wrapper
 import click
 import json
-from shutil import copyfile
-import shutil
-import scp
+import logging
 
 import os
 import sys
+import pkg_resources
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+logger = logging.getLogger()
+
+engine_path = os.path.dirname(os.path.realpath(__file__))
+version = pkg_resources.get_distribution("cuttle").version
+
+sys.path.append(engine_path)
 
 from cuttleengine import CuttleEngine
 
 config_file_name = 'cuttle.json'
 default_notebook_name = 'main.ipynb'
 default_plugin_file = 'main.py'
-
 
 def pass_config(f):
     @click.pass_context
@@ -65,26 +68,18 @@ class Platforms(click.MultiCommand):
 
 
 @click.group()
-def cli():
+@click.option('--log', default=False, is_flag=True)
+def cli(log):
+    if log==True:
+        logging.basicConfig(level=logging.INFO)
+    else:
+        logging.basicConfig(level=logging.ERROR)
+
+    logger.info("Cuttle CLI version: " + version)
+    logger.info("Appending to sys.path: " + os.path.dirname(os.path.realpath(__file__)))
+    logger.info("Current working directory: " + os.getcwd())
+
     pass
-
-
-@cli.command()
-@click.option('--env_name', help='The name of deployment environment', prompt=True, type=str)
-@pass_config
-def deploy(env_name, config):
-    try:
-        dep = config['environments'][env_name]
-        plugin_path = os.path.join(
-            'platform', config['environments'][env_name]['platform'], 'main.py')
-        with open(plugin_path) as f:
-            ns = {
-                'config': dep
-            }
-            code = compile(f.read(), plugin_path, 'exec')
-            eval(code, ns, ns)
-    except Exception as e:
-        print(e)
 
 
 @cli.command()
