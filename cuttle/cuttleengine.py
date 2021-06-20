@@ -121,8 +121,7 @@ class CuttleEngine:
                                 if line_token.type == 1:
                                     name = line_token.string
                                     break
-
-                            cell.source = cell.source.replace(g_.line, name + " = " + cuttle_value)
+                            cell.source = cell.source.replace(g_.line, name + " = " + cuttle_value + '\n')
 
                     if g_.string.split(" ")[0] == '#cuttle-config':
                         cuttle_config = g_.string.split(" ")[1:]
