@@ -19,8 +19,6 @@ app = Flask(__name__)
     for cell in notebook.cells:
         if cell.cell_type == 'code':
             if 'route' in cell.cuttle_config:
-                variable_code = ''
-
                 try:
                     method = cell.cuttle_config.method
                 except:
