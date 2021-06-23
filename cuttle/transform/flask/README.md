@@ -4,10 +4,10 @@ Enables converting a Jupyter Notebook to a Flask API project using [Cuttle](http
 
 ## Add required cell scoped configuration
 
-Required config - route, method
+Required config - route, method, response
 
 ```
-#cuttle-environment-set-config <environment> route=<route> method=<http method>
+#cuttle-environment-set-config <environment> route=<route> method=<http method> response=<response variable>
 ....
 ```
 
@@ -18,7 +18,7 @@ The plugin provides the original `request` object provided by Flask ([properties
 Example:
 
 ```
-file = open("./images/mnist3.png", "rb") #cuttle-environment-get-config mnist-api request.files['file']
+file = open("./images/mnist3.png", "rb") #cuttle-environment-assign mnist-api request.files['file']
 ```
 
 This results in:
@@ -27,20 +27,5 @@ This results in:
 file = request.files['file']
 ```
 
-## Configure response variable
-
-Set the variable whose value is to be returned as API response
-
-```
-c = str(digit) #cuttle-environment-set-config mnist-api response
-```
-
-This results in:
-
-```
-c = str(digit)
-
-return c
-```
 
 [MNIST API Example Project](https://github.com/CuttleLabs/cuttle-cli/tree/master/examples/mnist-api)

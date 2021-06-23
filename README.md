@@ -18,14 +18,16 @@ Cuttle needs to be initialized in the same folder as your notebook project.
 
 ```
 cuttle init
-cuttle create <environment> --tranformer <plugin-name>
+cuttle create <new environment name> --transformer <plugin-name>
 ```
 
 This should create a `cuttle.json` file which can be pushed to the project git repository.
 
 Cuttle configuration is either cell or line scoped. Cell scoped commands need to be mentioned at the top of the cell while line scoped commands are to be mentioned at the end of the line of code.
 
-#### Disabling Cells (Cell Scoped)
+### Cell Scoped Configuration
+
+#### Disabling Cells
 
 Omits the code present in the cell from the output project.
 
@@ -34,34 +36,36 @@ Omits the code present in the cell from the output project.
 ....
 ```
 
-####  Setting Configuration (Cell Scoped)
+####  Setting Configuration
 
-Sets configuration needed during transformation
+Sets configuration needed during transformation. Check transformer documentation for possible keys.
 
 ```
 #cuttle-environment-set-config <environment> <key>=<value>
 ...
 ```
 
-#### Getting Variable Value (Line Scoped)
+### Line Scoped Configuration
 
-Sets value of variable to configuration value
+#### Getting Variable Value
+
+Sets value of variable to global environment configuration value in `cuttle.json`
 
 ```
 a = 2 #cuttle-environment-get-config <environment> <key>
 ...
 ```
 
-#### Setting Configuration Value (Line Scoped)
+#### Assign Transformer Provided Dependency
 
-Sets value of configuration from variable
+Sets value of variable to dependency provided by transformer. Check transformer documentation for available dependencies.
 
 ```
-b = 2 #cuttle-environment-set-config <environment> <key>
+a = 2 #cuttle-environment-assign <environment> <dependency>
 ...
 ```
 
-#### Transform
+### Transform
 
 Creates transformed project in `output` folder.
 
