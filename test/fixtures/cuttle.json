@@ -1,0 +1,10 @@
+{
+    "environments": {
+        "mnist-api": {
+            "platform": "linux",
+            "transformer": "flask",
+            "EPOCHS": 10
+        }
+    },
+    "notebook": "mnist.ipynb"
+}
