@@ -2,7 +2,7 @@
 
 # Cuttle CLI
 
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![PyPI version](https://badge.fury.io/py/cuttle.svg)](https://badge.fury.io/py/cuttle) <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/cuttlehq?style=social">
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![PyPI version](https://badge.fury.io/py/cuttle.svg)](https://badge.fury.io/py/cuttle) <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/cuttlehq?style=social"> ![Unit Tests](https://github.com/CuttleLabs/cuttle-cli/actions/workflows/test.yml/badge.svg)
 
 Converting a Python notebook into a deployable project is hard and shifts the source of truth away from your initial development environment. Cuttle uses code generation to automate transformation of your notebook into deployable python projects (ex. Airflow pipeline, Flask API or just a Python script) without writing any extra code. 
 
