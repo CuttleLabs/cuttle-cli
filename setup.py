@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='cuttle',
-    version='0.4.1',
+    version='0.4.2',
     author="Karishnu Poddar",
     author_email="karishnu@gmail.com",
     packages=find_packages(),
