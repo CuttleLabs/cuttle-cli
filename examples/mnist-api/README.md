@@ -8,3 +8,5 @@ This directory contains the files needed to transform your notebook into an API.
 
 After transforming the notebook into an API, the `output` folder is created with a sub-directory containing the name of the environment. This folder consists the `main.py`.
 
+For reference, this is how the transformed file looks like:
+https://gist.github.com/668b811cf5a5be6ada42176d6736faee.git
