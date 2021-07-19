@@ -1,0 +1,9 @@
+{
+    "environments": {
+        "mnist-pipeline": {
+            "platform": "linux",
+            "transformer": "airflow"
+        }
+    },
+    "notebook": "mnist-pipeline.ipynb"
+}
