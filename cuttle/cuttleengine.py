@@ -8,14 +8,15 @@ from io import BytesIO
 logger = logging.getLogger()
 
 class CuttleEngine:
-    def __init__(self):
-        # self.config_file_name = '../prodo.json'
-        self.config_file_name = 'cuttle.json'
+    def __init__(self, path = 'cuttle.json'):
+        self.config_file_name = path
 
         config_file = open(self.config_file_name, "r")
         config_string = config_file.read()
 
         self.config = json.loads(config_string)
+
+        config_file.close()
 
     def setHomePath(self, path):
         self.home_path = path
