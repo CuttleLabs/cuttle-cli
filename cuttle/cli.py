@@ -6,6 +6,7 @@ import logging
 import os
 import sys
 import pkg_resources
+# import platform
 
 logger = logging.getLogger()
 
@@ -84,11 +85,16 @@ def cli(log):
 
 @cli.command()
 @click.option('--env_name', help='Unique name for Cuttle environment.', prompt=True, type=str)
-@click.option('--platform', help='The platform you want to deploy on', prompt=True, type=str)
+@click.option('--platform', help='The platform you want to deploy on', prompt=False, type=str)
 @click.option('--transformer', help='Transformer to use along with Cuttle environment.', prompt=True, type=str)
 @pass_config
 def create(env_name, platform, transformer, config):
     config_file_path = os.path.join(os.getcwd(), config_file_name)
+
+    if(platform is None):
+        # if default value is not preferred.
+        # how about using platform.platform()
+        platform = 'linux'
 
     config['environments'][env_name] = {
         'platform': platform,
